@@ -50,19 +50,22 @@ def add(item: AnimeBody):
 
 @app.put('/anime/{animeid}')
 def update(animeid: int, anime: AnimeBody):
-    animeEncontrado = [a for a in animes if a["AnimeID"] == animeid][0]
+    for a in animes:
+        if a["AnimeID"] == animeid:
+            a['Nombre'] = anime.Nombre
+            a['Año'] = anime.Año
+            a['Genero'] = anime.Genero
+            a['Estado'] = anime.Estado
 
-    animeEncontrado['Nombre'] = anime.Nombre
-    animeEncontrado['Año'] = anime.Año
-    animeEncontrado['Genero'] = anime.Genero
-    animeEncontrado['Estado'] = anime.Estado
+            return a
 
-    return animeEncontrado
+    return "Anime no encontrado"
 
 @app.delete('/anime/{animeid}')
 def delete(animeid: int):
     for i,a in enumerate(animes):
         if a["AnimeID"] == animeid:
             animes.pop(i)
+            return "Anime eliminado correctamente"
 
-    return "Anime eliminado correctamente"
+    return "Anime no encontrado"
